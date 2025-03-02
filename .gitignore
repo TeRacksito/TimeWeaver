@@ -3,3 +3,4 @@
 **/vendor
 **/.vscode/*
 !**/.vscode/extensions.json
+!**/.vscode/settings.json
