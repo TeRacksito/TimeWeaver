@@ -1,0 +1,4 @@
+{
+  "recommendations": ["usernamehw.errorlens", "ms-vscode-remote.remote-wsl"],
+  "unwantedRecommendations": ["redhat.fabric8-analytics"]
+}

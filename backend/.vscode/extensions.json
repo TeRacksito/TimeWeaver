@@ -1,0 +1,6 @@
+{
+  "recommendations": [
+    "usernamehw.errorlens"
+  ],
+  "unwantedRecommendations": ["redhat.fabric8-analytics"]
+}

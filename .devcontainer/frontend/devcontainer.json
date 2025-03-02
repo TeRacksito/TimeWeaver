@@ -1,0 +1,31 @@
+{
+  "name": "Frontend devcontainer",
+  "dockerComposeFile": "../../docker-compose.yml",
+  "service": "frontend",
+  "workspaceFolder": "/workspace/frontend",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "mhutchie.git-graph",
+        "streetsidesoftware.code-spell-checker",
+        "dbaeumer.vscode-eslint",
+        "eamodio.gitlens",
+        "ms-vscode.hexeditor",
+        "ecmel.vscode-html-css",
+        "VisualStudioExptTeam.vscodeintellicode",
+        "VisualStudioExptTeam.intellicode-api-usage-examples",
+        "Zignd.html-css-class-completion",
+        "ZainChen.json",
+        "moshfeu.compare-folders",
+        "pranaygp.vscode-css-peek",
+        "esbenp.prettier-vscode",
+        "streetsidesoftware.code-spell-checker-spanish",
+        "bradlc.vscode-tailwindcss",
+        "austenc.tailwind-docs",
+        "chriskirknielsen.visubezier",
+        "xabikos.JavaScriptSnippets",
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  }
+}

@@ -1,0 +1,5 @@
+**/.pnpm-store
+**/node_modules
+**/vendor
+**/.vscode/*
+!**/.vscode/extensions.json
