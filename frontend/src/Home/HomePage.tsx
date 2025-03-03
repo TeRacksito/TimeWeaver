@@ -1,20 +1,11 @@
 import { useEffect, useState } from "react";
+import { getWelcomePhrase } from "./services/main";
 
 export function HomePage() {
   const [phrase, setPhrase] = useState("");
 
   useEffect(() => {
-    const phrases = [
-      "Intuitive? We practically read your mind. (And your mouse movements.)",
-      "Effortless. Elegant. Unquestionably superior.",
-      "The best thing since sliced bread.",
-      "We're not bragging, but... yeah, we kind of are. This frontend is amazing.",
-      "Future-proof design, today. Because we're always ahead of the curve.",
-      "Prepare for a user experience that's... well, better. Much better.",
-    ];
-
-    const randomIndex = Math.floor(Math.random() * phrases.length);
-    setPhrase(phrases[randomIndex]);
+    getWelcomePhrase().then((data) => setPhrase(data));
   }, []);
 
   return (
