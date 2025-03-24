@@ -16,13 +16,11 @@
         "VisualStudioExptTeam.vscodeintellicode",
         "VisualStudioExptTeam.intellicode-api-usage-examples",
         "ZainChen.json",
-        "ryannaddy.laravel-artisan",
-        "bmewburn.vscode-intelephense-client",
-        "xdebug.php-debug",
         "esbenp.prettier-vscode",
-        "MehediDracula.php-namespace-resolver",
         "streetsidesoftware.code-spell-checker-spanish",
-        "redhat.vscode-xml"
+        "redhat.vscode-xml",
+        "vscjava.vscode-java-pack",
+        "vscjava.vscode-spring-initializr"
       ]
     }
   }

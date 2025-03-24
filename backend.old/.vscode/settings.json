@@ -1,0 +1,11 @@
+{
+    "php.validate.executablePath": "/usr/local/bin/php",
+    "cSpell.words": [
+        "autoloader",
+        "endsection",
+        "laravel",
+        "libzip",
+        "mysql",
+        "phpredis"
+    ]
+}
