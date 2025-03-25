@@ -1,3 +1,43 @@
-<h1>¿Quieres jugar al juego de los sacos de papas?</h1>
+<div class="container mx-auto p-4">
+  <h1 class="text-3xl font-bold mb-6 text-center">{{ 'BOOK_COLLECTION' | translate }}</h1>
 
-<a routerLink="/game" href="/game">Ir al juego</a>
+  <div *ngIf="loading" class="flex justify-center items-center py-12">
+    <span class="loading loading-spinner loading-lg text-primary"></span>
+  </div>
+
+  <div *ngIf="error" class="alert alert-error shadow-lg mb-6">
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none"
+        viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span>{{ error }}</span>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && books.length === 0 && !error" class="text-center py-12">
+    <div class="card max-w-md mx-auto bg-base-200 shadow-xl">
+      <div class="card-body">
+        <h2 class="card-title justify-center">{{'NO_BOOKS_FOUND' | translate }}</h2>
+        <p>{{ 'NO_BOOKS_FOUND_MESSAGE' | translate }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && books.length > 0" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <div *ngFor="let book of books" class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300">
+      <div class="card-body">
+        <h2 class="card-title text-lg">{{ book.title }}</h2>
+        <p class="text-sm opacity-70">by {{ book.author.name }}</p>
+        <p class="text-xs text-gray-500">{{ 'CODE' | translate }}: {{ book.uniqueCode }}</p>
+        <div class="flex flex-wrap gap-1 mt-3">
+          <span *ngFor="let genre of book.genres" class="badge badge-primary">{{ genre.name }}</span>
+        </div>
+        <div class="card-actions justify-end mt-4">
+          <button class="btn btn-primary btn-sm">{{ 'VIEW_DETAILS' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

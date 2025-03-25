@@ -1,6 +1,5 @@
 {
-  "cSpell.words": [
-    "cooldown",
-    "tailwindcss"
-  ]
+  "cSpell.words": ["cooldown", "tailwindcss"],
+  "i18n-ally.localesPaths": ["public/i18n"],
+  "i18n-ally.keystyle": "nested"
 }

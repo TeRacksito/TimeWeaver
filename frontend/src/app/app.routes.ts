@@ -1,10 +1,9 @@
 import { Routes } from '@angular/router';
-import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
-import { GameComponent } from './components/game/game.component';
+import { authGuard } from './guards/auth.guard';
+import { LoginComponent } from './components/login/login.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'game', component: GameComponent },
-  // { path: 'scoreboard', component: ScoreboardPageComponent }
+  { path: '', component: HomeComponent, canActivate: [authGuard] },
+  { path: 'login', component: LoginComponent },
 ];
