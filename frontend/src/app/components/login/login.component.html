@@ -19,7 +19,7 @@
 
       <button type="button" (click)="login()" [disabled]="isLoading()"
         class="btn btn-primary w-full mt-4 dark:bg-blue-600 dark:border-none">
-        <span *ngIf="!isLoading()">Login</span>
+        <span *ngIf="!isLoading()">{{ 'LOGIN' | translate}}</span>
         <span *ngIf="isLoading()" class="loading loading-spinner"></span>
       </button>
     </form>
