@@ -1,6 +1,6 @@
 import { Component, inject, signal, WritableSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { TranslateDirective, TranslatePipe } from '@ngx-translate/core';
@@ -14,6 +14,7 @@ import { TranslateDirective, TranslatePipe } from '@ngx-translate/core';
 export class LoginComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
   username = '';
   password = '';
@@ -29,7 +30,7 @@ export class LoginComponent {
       .subscribe({
         next: () => {
           this.isLoading.set(false);
-          this.router.navigate(['/dashboard']);
+          this.router.navigate([this.route.snapshot.queryParams["returnUrl"] || '/']);
         },
         error: (err) => {
           this.isLoading.set(false);

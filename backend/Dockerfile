@@ -4,6 +4,12 @@ WORKDIR /workspace/backend
 
 COPY . .
 
+RUN apt-get update && apt-get install -y \
+  git \
+  maven \
+  zip \
+  unzip
+
 RUN ./mvnw install -DskipTests
 
 EXPOSE 8080
