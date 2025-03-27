@@ -13,10 +13,10 @@
   </parent>
 
   <groupId>es.angelkrasimirov</groupId>
-  <artifactId>biblioteca</artifactId>
+  <artifactId>timeweaver</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>Biblioteca</name>
-  <description>Demo project for Spring Boot</description>
+  <name>TimeWeaver</name>
+  <description>A Storytelling platform for everyone</description>
 
   <properties>
     <java.version>21</java.version>
