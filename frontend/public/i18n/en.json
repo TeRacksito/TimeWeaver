@@ -21,5 +21,16 @@
   "NO_BOOKS_FOUND_MESSAGE": "There are no books available in the collection right now.",
   "VIEW_DETAILS": "View details",
   "CODE": "Code",
-  "THEME": "Theme"
+  "THEME": "Theme",
+  "REGISTER": "Register",
+  "NO_ACCOUNT": "I don't have an account.",
+  "USERNAME_REQUIRED": "{{fieldName}} is required",
+  "USERNAME_MIN_LENGTH": "",
+  "PASSWORD_REQUIRED": "Password is required",
+  "PASSWORD_MIN_LENGTH": "Password must be atleast {{minLength}} characters long",
+  "ALL_RIGHTS_RESERVED": "All rights reserved",
+  "FORM_FIELD_REQUIRED": "{{fieldName}} is required",
+  "FORM_FIELD_MIN_LENGTH": "{{fieldName}} must be at least {{minLength}} characters long",
+  "LOGIN_ERROR": "Error while login...",
+  "HAVE_ACCOUNT": "I have an account."
 }

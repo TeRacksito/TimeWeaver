@@ -8,6 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
+import es.angelkrasimirov.timeweaver.dtos.UserRegistrationDto;
 import es.angelkrasimirov.timeweaver.models.Role;
 import es.angelkrasimirov.timeweaver.models.User;
 import es.angelkrasimirov.timeweaver.services.RoleService;
@@ -54,19 +55,17 @@ public class UserController {
 		existingUser.setUsername(user.getUsername());
 		existingUser.setPassword(user.getPassword());
 
-		User updatedUser = userService.hashAndSaveUser(existingUser);
-
+		User updatedUser = userService.hashPasswordUser(existingUser);
+		updatedUser = userService.saveUser(updatedUser);
 		return ResponseEntity.ok(updatedUser);
 	}
 
 	@PostMapping("/users")
-	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
-		Role userRole = roleService.findRoleByName("ROLE_USER");
-		user.addRole(userRole);
-		User newUser = userService.hashAndSaveUser(user);
+	public ResponseEntity<User> createUser(@Valid @RequestBody UserRegistrationDto userRegistrationDto) {
+		User newUser = userService.createNewUser(userRegistrationDto);
+		newUser = userService.saveUser(newUser);
 		return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
 	}
-
 
 	@PreAuthorize("hasRole('ADMIN') or #userId == authentication.principal.id")
 	@DeleteMapping("/users/{userId}")
@@ -79,16 +78,15 @@ public class UserController {
 		}
 	}
 
-
-//	@PostMapping("/users/register")
-//	public ResponseEntity<User> registerUser(@RequestBody User user) {
-//		User newUser = userService.registerUser(user);
-//		return ResponseEntity.ok(newUser);
-//	}
-//
-//	@PostMapping("/users/login")
-//	public ResponseEntity<String> loginUser(@RequestBody User user) {
-//		String token = authenticationService.authenticateUser(user);
-//		return ResponseEntity.ok(token);
-//	}
+	// @PostMapping("/users/register")
+	// public ResponseEntity<User> registerUser(@RequestBody User user) {
+	// User newUser = userService.registerUser(user);
+	// return ResponseEntity.ok(newUser);
+	// }
+	//
+	// @PostMapping("/users/login")
+	// public ResponseEntity<String> loginUser(@RequestBody User user) {
+	// String token = authenticationService.authenticateUser(user);
+	// return ResponseEntity.ok(token);
+	// }
 }

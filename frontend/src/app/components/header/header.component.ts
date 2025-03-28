@@ -14,6 +14,9 @@ import { RouterModule } from '@angular/router';
   styleUrl: './header.component.css',
   imports: [CommonModule, RouterModule, TranslatePipe, TranslateDirective],
   standalone: true,
+  host: {
+    class: 'sticky top-0 z-50',
+  },
 })
 export class HeaderComponent implements OnInit {
   currentLang: string = 'en';

@@ -27,7 +27,8 @@
         "xabikos.JavaScriptSnippets",
         "ms-azuretools.vscode-docker",
         "apk27.ngx-translate-lookup",
-        "Lokalise.i18n-ally"
+        "Lokalise.i18n-ally",
+        "Angular.ng-template"
       ]
     }
   }

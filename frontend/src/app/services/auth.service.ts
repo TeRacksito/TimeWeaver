@@ -1,13 +1,20 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
+import {
+  LoginCredentials,
+  LoginResponse,
+  RegisterCredentials,
+} from '../types/auth';
+import { User } from '../types/user';
+import { toApiUrl } from '../utils/api';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private http = inject(HttpClient);
-  private token: string | null = null;
+  private token: LoginResponse['accessToken'] | null = null;
   public isAuthenticated$ = new BehaviorSubject<boolean>(false);
 
   constructor() {
@@ -18,19 +25,28 @@ export class AuthService {
     }
   }
 
-  login(credentials: {
-    username: string;
-    password: string;
-  }): Observable<{ accessToken: string }> {
+  login(credentials: LoginCredentials): Observable<LoginResponse> {
     return this.http
-      .post<{ accessToken: string }>('/api/v1/auth/login', credentials)
+      .post<LoginResponse>(toApiUrl('/auth/login'), credentials)
       .pipe(
         tap((response) => {
           this.token = response.accessToken;
           localStorage.setItem('token', this.token);
           this.isAuthenticated$.next(true);
-        })
+        }),
       );
+  }
+
+  register(credentials: RegisterCredentials) {
+    return this.http
+      .post<User>(toApiUrl('/users'), credentials)
+      .pipe(tap((response) => {}));
+  }
+
+  isUsernameAvailable(username: string): Observable<boolean> {
+    return this.http.get<boolean>(
+      toApiUrl(`/users/available?username=${username}`),
+    );
   }
 
   logout(): void {
@@ -39,11 +55,29 @@ export class AuthService {
     this.isAuthenticated$.next(false);
   }
 
-  getToken(): string | null {
+  cleanUp(): void {
+    this.logout();
+  }
+
+  getToken(): LoginResponse['accessToken'] | null {
     return this.token;
   }
 
   isLoggedIn(): boolean {
-    return !!this.token;
+    return !!this.token && !this.isTokenExpired();
+  }
+
+  isTokenExpired(): boolean {
+    if (!this.token) {
+      return true;
+    }
+
+    try {
+      const payload = this.token.split('.')[1];
+      const decodedPayload = JSON.parse(atob(payload));
+      return decodedPayload.exp * 1000 < Date.now();
+    } catch (error) {
+      return true;
+    }
   }
 }

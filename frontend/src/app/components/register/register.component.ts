@@ -6,14 +6,13 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AuthService } from '../../services/auth.service';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 @Component({
-  standalone: true,
-  selector: 'app-login',
+  selector: 'app-register',
   imports: [
     CommonModule,
     RouterModule,
@@ -21,9 +20,10 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     TranslatePipe,
     FontAwesomeModule,
   ],
-  templateUrl: './login.component.html',
+  templateUrl: './register.component.html',
+  styleUrl: './register.component.css',
 })
-export class LoginComponent {
+export class RegisterComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
@@ -56,7 +56,7 @@ export class LoginComponent {
     return this.loginForm.get('password');
   }
 
-  login() {
+  register() {
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
       return;
@@ -67,16 +67,16 @@ export class LoginComponent {
 
     const { username, password } = this.loginForm.value;
 
-    this.authService.login({ username, password }).subscribe({
-      next: () => {
+    this.authService.register({ username, password }).subscribe({
+      complete: () => {
         this.isLoading.set(false);
-        this.router.navigate([
-          this.route.snapshot.queryParams['returnUrl'] || '/',
-        ]);
+        this.router.navigate(['/login']);
       },
       error: (err) => {
         this.isLoading.set(false);
-        this.errorMessage.set(err.error?.message || 'Login failed');
+        console.log(err);
+
+        this.errorMessage.set(err.error?.message || 'Registration failed');
       },
     });
   }

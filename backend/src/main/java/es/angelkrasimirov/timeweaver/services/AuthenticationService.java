@@ -7,7 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import es.angelkrasimirov.timeweaver.dtos.LoginDto;
+import es.angelkrasimirov.timeweaver.dtos.UserLoginDto;
 import es.angelkrasimirov.timeweaver.utils.JwtTokenProvider;
 
 @Service
@@ -19,7 +19,7 @@ public class AuthenticationService {
 	@Autowired
 	private JwtTokenProvider jwtTokenProvider;
 
-	public String login(LoginDto loginDto) {
+	public String login(UserLoginDto loginDto) {
 		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
 				loginDto.getUsername(),
 				loginDto.getPassword()

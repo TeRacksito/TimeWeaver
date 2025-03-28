@@ -32,7 +32,8 @@ public class SecurityConfig {
 	private JwtAuthenticationFilter authenticationFilter;
 
 	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, UserDetailsService userDetailsService) throws Exception {
+	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, UserDetailsService userDetailsService)
+			throws Exception {
 		httpSecurity
 				.csrf(AbstractHttpConfigurer::disable)
 				.authorizeHttpRequests(auth -> auth
@@ -40,15 +41,13 @@ public class SecurityConfig {
 						.requestMatchers("/api/health/**").permitAll()
 						.requestMatchers(HttpMethod.POST, "/api/v1/users").permitAll()
 						.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-						.anyRequest().authenticated()
-				)
+						.anyRequest().authenticated())
 				.userDetailsService(userDetailsService)
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
 		httpSecurity.exceptionHandling(exception -> exception
 				.authenticationEntryPoint(jwtAuthenticationEntryPoint)
-				.accessDeniedHandler(accessDeniedHandler)
-		);
+				.accessDeniedHandler(accessDeniedHandler));
 
 		httpSecurity.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

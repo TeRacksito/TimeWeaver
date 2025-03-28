@@ -41,17 +41,19 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
 	}
 
-//	@ExceptionHandler(Exception.class)
-//	public ResponseEntity<Map<String, String>> handleGlobalException(Exception ex) {
-//		Map<String, String> response = new HashMap<>();
-//		response.put("error", "Internal Server Error");
-//		response.put("message", ex.getMessage());
-//		return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-//	}
+	// @ExceptionHandler(Exception.class)
+	// public ResponseEntity<Map<String, String>> handleGlobalException(Exception
+	// ex) {
+	// Map<String, String> response = new HashMap<>();
+	// response.put("error", "Internal Server Error");
+	// response.put("message", ex.getMessage());
+	// return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+	// }
 
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<Map<String, String>> handleGlobalException(Exception ex) throws Exception {
-		if (ex instanceof org.springframework.security.core.AuthenticationException || ex instanceof org.springframework.security.access.AccessDeniedException) {
+		if (ex instanceof org.springframework.security.core.AuthenticationException
+				|| ex instanceof org.springframework.security.access.AccessDeniedException) {
 			throw ex; // let fucking Spring security handle these
 		}
 

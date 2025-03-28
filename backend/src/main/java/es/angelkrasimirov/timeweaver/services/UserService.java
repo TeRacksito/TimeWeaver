@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import es.angelkrasimirov.timeweaver.config.CustomUserDetails;
+import es.angelkrasimirov.timeweaver.dtos.UserLoginDto;
+import es.angelkrasimirov.timeweaver.dtos.UserRegistrationDto;
+import es.angelkrasimirov.timeweaver.mappers.UserMapper;
 import es.angelkrasimirov.timeweaver.models.User;
 import es.angelkrasimirov.timeweaver.repositories.UserRepository;
 
@@ -40,14 +43,33 @@ public class UserService implements UserDetailsService {
 		return userRepository.findById(id).orElse(null);
 	}
 
+	/**
+	 * This method is used to create a new user. It will hash the password.
+	 * 
+	 * @param userRegistrationDto
+	 * @return User with hashed password
+	 */
+	public User createNewUser(UserRegistrationDto userRegistrationDto) {
+		User user = convertToEntity(userRegistrationDto);
+		return hashPasswordUser(user);
+	}
+
+	/**
+	 * Saves a given User. Use the returned instance
+	 * for further operations as the save operation
+	 * might have changed the entity instance completely.
+	 * 
+	 * @param user
+	 * @return User
+	 */
 	public User saveUser(User user) {
 		return userRepository.save(user);
 	}
 
-	public User hashAndSaveUser(User user) {
+	public User hashPasswordUser(User user) {
 		String hashedPassword = passwordEncoder.encode(user.getPassword());
 		user.setPassword(hashedPassword);
-		return saveUser(user);
+		return user;
 	}
 
 	public void deleteUser(Long id) throws NoResourceFoundException {
@@ -63,7 +85,8 @@ public class UserService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+		User user = userRepository.findByUsername(username)
+				.orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
 		Set<GrantedAuthority> authorities = user.getRoles().stream()
 				.map((role) -> new SimpleGrantedAuthority(role.getName()))
@@ -73,7 +96,22 @@ public class UserService implements UserDetailsService {
 				user.getId(),
 				username,
 				user.getPassword(),
-				authorities
-		);
+				authorities);
+	}
+
+	public UserLoginDto convertToLoginDto(User user) {
+		return UserMapper.INSTANCE.toLoginDto(user);
+	}
+
+	public User convertToEntity(UserLoginDto userDTO) {
+		return UserMapper.INSTANCE.toEntity(userDTO);
+	}
+
+	public UserRegistrationDto convertToRegistrationDto(User user) {
+		return UserMapper.INSTANCE.toRegistrationDto(user);
+	}
+
+	public User convertToEntity(UserRegistrationDto userDTO) {
+		return UserMapper.INSTANCE.toEntity(userDTO);
 	}
 }

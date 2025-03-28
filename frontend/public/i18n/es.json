@@ -20,5 +20,16 @@
   "VIEW_DETAILS": "Ver detalles",
   "CODE": "Código",
   "BOOK_COLLECTION": "Colección de libros",
-  "THEME": "Tema"
+  "THEME": "Tema",
+  "REGISTER": "Registrarse",
+  "NO_ACCOUNT": "No tengo una cuenta.",
+  "USERNAME_REQUIRED": "{{fieldName}} es requerido",
+  "USERNAME_MIN_LENGTH": "",
+  "PASSWORD_REQUIRED": "Se requiere contraseña",
+  "PASSWORD_MIN_LENGTH": "La contraseña debe tener al menos {{minLength}} caracteres",
+  "ALL_RIGHTS_RESERVED": "Todos los derechos reservados",
+  "FORM_FIELD_REQUIRED": "{{fieldName}} es necesario",
+  "FORM_FIELD_MIN_LENGTH": "{{fieldName}} debe tener al menos {{minLength}} caracteres",
+  "LOGIN_ERROR": "Error durante el inicio de sesión...",
+  "HAVE_ACCOUNT": "Tengo una cuenta."
 }
