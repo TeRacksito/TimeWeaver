@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import es.angelkrasimirov.timeweaver.config.CustomUserDetails;
+
 import javax.crypto.SecretKey;
 import java.util.Date;
 
@@ -21,12 +23,19 @@ public class JwtTokenProvider {
 	public String generateToken(Authentication authentication) {
 
 		String username = authentication.getName();
+		Long userId = null;
+
+		if (authentication.getPrincipal() instanceof CustomUserDetails) {
+			userId = ((CustomUserDetails) authentication.getPrincipal()).getId();
+		}
+
 		Date now = new Date();
 		long oneHourInMilliseconds = 60 * 60 * 1000;
 		Date validity = new Date(now.getTime() + oneHourInMilliseconds);
 
 		return Jwts.builder()
 				.subject(username)
+				.claim("userId", userId)
 				.issuedAt(now)
 				.expiration(validity)
 				.signWith(getSigningKey())
@@ -57,6 +66,5 @@ public class JwtTokenProvider {
 	private SecretKey getSigningKey() {
 		return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
 	}
-
 
 }

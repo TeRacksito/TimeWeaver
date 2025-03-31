@@ -7,12 +7,14 @@ import {
 } from '@ngx-translate/core';
 import { DOCUMENT } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
-  imports: [CommonModule, RouterModule, TranslatePipe, TranslateDirective],
+  imports: [CommonModule, RouterModule, TranslatePipe],
   standalone: true,
   host: {
     class: 'sticky top-0 z-50',
@@ -21,22 +23,39 @@ import { RouterModule } from '@angular/router';
 export class HeaderComponent implements OnInit {
   currentLang: string = 'en';
   isDarkTheme: boolean = false;
+  unreadNotificationsCount: number = 0;
 
   constructor(
     private translate: TranslateService,
     private renderer: Renderer2,
-    @Inject(DOCUMENT) private document: Document
+    public authService: AuthService,
+    public notificationService: NotificationService,
+    @Inject(DOCUMENT) private document: Document,
   ) {}
 
   ngOnInit() {
-    this.currentLang =
-      this.translate.currentLang || this.translate.defaultLang || 'en';
+    this.initializeLanguage();
+    this.initializeTheme();
+
+    this.notificationService.getUnreadCount().subscribe((count) => {
+      this.unreadNotificationsCount = count;
+    });
+  }
+
+  initializeLanguage() {
+    const savedLang = localStorage.getItem('language');
+
+    if (savedLang) {
+      this.translate.use(savedLang);
+      this.currentLang = savedLang;
+    } else {
+      this.currentLang =
+        this.translate.currentLang || this.translate.defaultLang || 'en';
+    }
 
     this.translate.onLangChange.subscribe((event) => {
       this.currentLang = event.lang;
     });
-
-    this.initializeTheme();
   }
 
   switchLanguage(lang: string, event?: Event) {
@@ -47,6 +66,7 @@ export class HeaderComponent implements OnInit {
 
     this.translate.use(lang);
     this.currentLang = lang;
+    localStorage.setItem('language', lang);
   }
 
   initializeTheme() {
@@ -56,7 +76,7 @@ export class HeaderComponent implements OnInit {
       this.isDarkTheme = savedTheme === 'dark';
     } else {
       this.isDarkTheme = window.matchMedia(
-        '(prefers-color-scheme: dark)'
+        '(prefers-color-scheme: dark)',
       ).matches;
     }
 
@@ -89,7 +109,7 @@ export class HeaderComponent implements OnInit {
     this.renderer.setAttribute(
       this.document.documentElement,
       'data-theme',
-      theme
+      theme,
     );
   }
 }

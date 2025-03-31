@@ -15,6 +15,7 @@ import es.angelkrasimirov.timeweaver.config.CustomUserDetails;
 import es.angelkrasimirov.timeweaver.dtos.UserLoginDto;
 import es.angelkrasimirov.timeweaver.dtos.UserRegistrationDto;
 import es.angelkrasimirov.timeweaver.mappers.UserMapper;
+import es.angelkrasimirov.timeweaver.models.Role;
 import es.angelkrasimirov.timeweaver.models.User;
 import es.angelkrasimirov.timeweaver.repositories.UserRepository;
 
@@ -29,39 +30,32 @@ public class UserService implements UserDetailsService {
 	private UserRepository userRepository;
 
 	@Autowired
+	private RoleService roleService;
+
+	@Autowired
 	private PasswordEncoder passwordEncoder;
 
 	public List<User> getAllUsers() {
 		return userRepository.findAll();
 	}
 
-	public List<User> getUsersOrderedByLoans() {
-		return userRepository.findAllUsersOrderedByLoans();
-	}
-
 	public User getUserById(Long id) {
 		return userRepository.findById(id).orElse(null);
 	}
 
-	/**
-	 * This method is used to create a new user. It will hash the password.
-	 * 
-	 * @param userRegistrationDto
-	 * @return User with hashed password
-	 */
 	public User createNewUser(UserRegistrationDto userRegistrationDto) {
 		User user = convertToEntity(userRegistrationDto);
+
+		Role role = roleService.getRoleByName("ROLE_USER");
+		if (role == null) {
+			throw new IllegalStateException("Role not found");
+		}
+
+		user.addRole(role);
+
 		return hashPasswordUser(user);
 	}
 
-	/**
-	 * Saves a given User. Use the returned instance
-	 * for further operations as the save operation
-	 * might have changed the entity instance completely.
-	 * 
-	 * @param user
-	 * @return User
-	 */
 	public User saveUser(User user) {
 		return userRepository.save(user);
 	}
@@ -113,5 +107,14 @@ public class UserService implements UserDetailsService {
 
 	public User convertToEntity(UserRegistrationDto userDTO) {
 		return UserMapper.INSTANCE.toEntity(userDTO);
+	}
+
+	public boolean existsByUsername(String username) {
+		return userRepository.existsByUsername(username);
+	}
+
+	public User getUserByUsername(String username) {
+		return userRepository.findByUsername(username).orElseThrow(
+				() -> new UsernameNotFoundException("User not found with username: " + username));
 	}
 }

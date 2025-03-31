@@ -1,0 +1,46 @@
+<div class="container mx-auto p-4">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold">{{ "PROJECTS" | translate }}</h1>
+    <button class="btn btn-primary" (click)="openCreateProjectModal()">
+      {{ "CREATE_PROJECT" | translate }}
+    </button>
+  </div>
+  <p class="text-lg mb-6">{{ "PROJECTS_DESCRIPTION" | translate }}</p>
+
+  <div *ngIf="isLoading()">
+    <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+      <div
+        *ngFor="let _ of getIndexArray(6)"
+        class="card bg-base-100 shadow-xl"
+      >
+        <div class="card-body">
+          <div class="skeleton h-6 w-1/2 mb-2"></div>
+          <div class="skeleton h-4 w-full"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading()">
+    <div *ngIf="!projects.length" class="text-center text-gray-500">
+      {{ "NO_PROJECTS" | translate }}
+    </div>
+    <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+      <div
+        *ngFor="let project of projects"
+        class="card bg-base-100 shadow-xl cursor-pointer hover:shadow-2xl transition-shadow"
+        [routerLink]="['/projects', project.id]"
+      >
+        <div class="card-body">
+          <h2 class="card-title">{{ project.name }}</h2>
+          <p *ngIf="project.description">{{ project.description }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-create-project
+    [openModalTrigger]="createProjectModalTrigger$"
+    (projectCreated)="onProjectCreated()"
+  ></app-create-project>
+</div>

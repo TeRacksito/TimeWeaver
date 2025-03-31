@@ -2,27 +2,83 @@
   <div class="navbar container mx-auto px-4">
     <div class="flex-1">
       <a routerLink="/" class="btn btn-ghost gap-2">
-      <img src="/TimeWeaverLogo.svg" alt="Logo" class="w-8 h-8">
-      <span class="text-xl font-bold">{{ 'BRAND' | translate }}</span>
+        <img src="/TimeWeaverLogo.svg" alt="Logo" class="w-8 h-8" />
+        <span class="text-xl font-bold">{{ "BRAND" | translate }}</span>
       </a>
     </div>
 
     <div class="flex-none hidden md:flex">
       <ul class="menu menu-horizontal px-1">
-        <li><a routerLink="/" class="rounded-lg hover:bg-primary/10 transition-all duration-200">{{ 'HOME' | translate
-            }}</a></li>
-        <li><a routerLink="/login" class="rounded-lg hover:bg-primary/10 transition-all duration-200">{{ 'LOGIN' |
-            translate }}</a></li>
+        <li>
+          <a
+            routerLink="/"
+            class="rounded-lg hover:bg-primary/10 transition-all duration-200"
+            >{{ "HOME" | translate }}</a
+          >
+        </li>
+        <li>
+          @if (authService.isLoggedIn()) {
+            <!-- <div class="relative">
+              <a [routerLink]="['/profile']" class="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                <span class="absolute -inset-1.5"></span>
+                <span class="sr-only">Open user menu</span>
+                <img class="h-8 w-8 rounded-full" src="https://api.dicebear.com/7.x/initials/svg?seed={{authService.getUsername()}}" alt="User avatar">
+              
+                <span *ngIf="unreadNotificationsCount > 0" 
+                  class="absolute -top-1 -right-1 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">
+                  {{ unreadNotificationsCount > 9 ? '9+' : unreadNotificationsCount }}
+                </span>
+              </a>
+            </div> -->
+            <a
+              routerLink="/profile"
+              class="rounded-lg hover:bg-primary/10 transition-all duration-200"
+            >
+              <div class="avatar">
+                <div class="w-5.5 h-5.5 rounded-full">
+                  <img
+                    [src]="`https://api.dicebear.com/9.x/initials/svg?seed=${authService.getUsername()}`"
+                    alt="User icon"
+                  />
+                </div>
+              </div>
+              <span
+                *ngIf="unreadNotificationsCount > 0"
+                class="absolute top-1 right-1 badge badge-sm badge-accent transform translate-x-1/2 -translate-y-1/2"
+              >
+                {{
+                  unreadNotificationsCount > 9 ? "9+" : unreadNotificationsCount
+                }}
+              </span>
+            </a>
+          } @else {
+            <a
+              routerLink="/login"
+              class="rounded-lg hover:bg-primary/10 transition-all duration-200"
+              >{{ "LOGIN" | translate }}</a
+            >
+          }
+        </li>
+
         <li>
           <details class="dropdown">
-            <summary class="rounded-lg hover:bg-primary/10 transition-all duration-200">
-              {{ 'MORE' | translate }}
+            <summary
+              class="rounded-lg hover:bg-primary/10 transition-all duration-200"
+            >
+              {{ "MORE" | translate }}
             </summary>
-            <ul class="dropdown-content z-[1] menu p-2 shadow-lg bg-base-100 rounded-box w-52 mt-2">
-              <li><a class="hover:bg-primary/10 transition-all duration-200">{{ 'CONTACT' | translate }}</a></li>
-              <li><a class="hover:bg-primary/10 transition-all duration-200">{{ 'ABOUT' | translate }}</a></li>
-              <li><a class="hover:bg-primary/10 transition-all duration-200">{{ 'SERVICES' | translate }}</a></li>
-              <li><a class="hover:bg-primary/10 transition-all duration-200">{{ 'BLOG' | translate }}</a></li>
+            <ul
+              class="dropdown-content z-[1] menu p-2 shadow-lg bg-base-100 rounded-box w-52 mt-2"
+            >
+              <li>
+                @if (authService.isLoggedIn()) {
+                  <a
+                    routerLink="/projects"
+                    class="hover:bg-primary/10 transition-all duration-200"
+                    >{{ "PROJECTS" | translate }}</a
+                  >
+                }
+              </li>
             </ul>
           </details>
         </li>
@@ -31,49 +87,104 @@
 
     <div class="flex-none ml-auto gap-2">
       <button (click)="toggleTheme($event)" class="btn btn-ghost btn-circle">
-        <svg *ngIf="isDarkTheme" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-          stroke="currentColor" class="w-5 h-5">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+        <svg
+          *ngIf="isDarkTheme"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="w-5 h-5"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
+          />
         </svg>
 
-        <svg *ngIf="!isDarkTheme" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-          stroke="currentColor" class="w-5 h-5">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
+        <svg
+          *ngIf="!isDarkTheme"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="w-5 h-5"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"
+          />
         </svg>
       </button>
 
       <div class="dropdown dropdown-end">
         <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-            stroke="currentColor" class="w-5 h-5">
-            <path stroke-linecap="round" stroke-linejoin="round"
-              d="M10.5 21l5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 016-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 01-3.827-5.802" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-5 h-5"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M10.5 21l5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 016-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 01-3.827-5.802"
+            />
           </svg>
         </div>
-        <ul class="dropdown-content z-[10] menu p-2 shadow-lg bg-base-100 rounded-box w-52 mt-2">
+        <ul
+          class="dropdown-content z-[10] menu p-2 shadow-lg bg-base-100 rounded-box w-52 mt-2"
+        >
           <li>
-            <a (click)="switchLanguage('en', $event)" tabindex="0"
-              class="flex items-center gap-2 hover:bg-primary/10 transition-all duration-200">
-              {{ 'ENGLISH' | translate }}
-              <span class="badge badge-sm ml-auto" *ngIf="currentLang === 'en'">{{ 'CURRENT' | translate }}</span>
+            <a
+              (click)="switchLanguage('en', $event)"
+              tabindex="0"
+              class="flex items-center gap-2 hover:bg-primary/10 transition-all duration-200"
+            >
+              {{ "ENGLISH" | translate }}
+              <span
+                class="badge badge-sm ml-auto"
+                *ngIf="currentLang === 'en'"
+                >{{ "CURRENT" | translate }}</span
+              >
             </a>
           </li>
           <li>
-            <a (click)="switchLanguage('es', $event)" tabindex="0"
-              class="flex items-center gap-2 hover:bg-primary/10 transition-all duration-200">
-              {{ 'SPANISH' | translate }}
-              <span class="badge badge-sm ml-auto" *ngIf="currentLang === 'es'">{{ 'CURRENT' | translate }}</span>
+            <a
+              (click)="switchLanguage('es', $event)"
+              tabindex="0"
+              class="flex items-center gap-2 hover:bg-primary/10 transition-all duration-200"
+            >
+              {{ "SPANISH" | translate }}
+              <span
+                class="badge badge-sm ml-auto"
+                *ngIf="currentLang === 'es'"
+                >{{ "CURRENT" | translate }}</span
+              >
             </a>
           </li>
         </ul>
       </div>
 
       <label for="mobile-drawer" class="btn btn-ghost btn-circle md:hidden">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-          class="w-6 h-6">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="w-6 h-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+          />
         </svg>
       </label>
     </div>
@@ -87,52 +198,114 @@
     <ul class="menu p-4 w-80 h-full bg-base-200 text-base-content">
       <li class="mb-4">
         <a routerLink="/" class="text-xl font-bold">
-          {{ 'BRAND' | translate }}
+          {{ "BRAND" | translate }}
         </a>
       </li>
       <div class="divider"></div>
-      <li><a routerLink="/" class="hover:bg-primary/10 transition-all duration-200">{{ 'HOME' | translate }}</a></li>
-      <li><a routerLink="/login" class="hover:bg-primary/10 transition-all duration-200">{{ 'LOGIN' | translate }}</a>
+      <li>
+        <a
+          routerLink="/"
+          class="hover:bg-primary/10 transition-all duration-200"
+          >{{ "HOME" | translate }}</a
+        >
       </li>
-      <li><a class="hover:bg-primary/10 transition-all duration-200">{{ 'ABOUT' | translate }}</a></li>
-      <li><a class="hover:bg-primary/10 transition-all duration-200">{{ 'CONTACT' | translate }}</a></li>
-      <li><a class="hover:bg-primary/10 transition-all duration-200">{{ 'SERVICES' | translate }}</a></li>
-      <li><a class="hover:bg-primary/10 transition-all duration-200">{{ 'BLOG' | translate }}</a></li>
+      <li>
+        @if (authService.isLoggedIn()) {
+          <a
+            routerLink="/profile"
+            class="hover:bg-primary/10 transition-all duration-200"
+          >
+            <div class="flex items-center gap-2">
+              <img
+                [src]="`https://api.dicebear.com/9.x/initials/svg?seed=${authService.getUsername()}`"
+                alt="User icon"
+                class="w-5 h-5 rounded-full"
+              />
+              {{ "PROFILE" | translate }}
+            </div>
+          </a>
+        } @else {
+          <a
+            routerLink="/login"
+            class="hover:bg-primary/10 transition-all duration-200"
+            >{{ "LOGIN" | translate }}</a
+          >
+        }
+      </li>
+      <li>
+        @if (authService.isLoggedIn()) {
+          <a
+            routerLink="/projects"
+            class="hover:bg-primary/10 transition-all duration-200"
+            >{{ "PROJECTS" | translate }}</a
+          >
+        }
+      </li>
 
-      <div class="divider">{{ 'THEME' | translate }}</div>
+      <div class="divider">{{ "THEME" | translate }}</div>
 
       <li>
-        <a (click)="toggleTheme($event)"
-          class="flex items-center gap-2 hover:bg-primary/10 transition-all duration-200">
-          <span *ngIf="isDarkTheme">{{ 'LIGHT_MODE' | translate }}</span>
-          <span *ngIf="!isDarkTheme">{{ 'DARK_MODE' | translate }}</span>
+        <a
+          (click)="toggleTheme($event)"
+          class="flex items-center gap-2 hover:bg-primary/10 transition-all duration-200"
+        >
+          <span *ngIf="isDarkTheme">{{ "LIGHT_MODE" | translate }}</span>
+          <span *ngIf="!isDarkTheme">{{ "DARK_MODE" | translate }}</span>
 
-          <svg *ngIf="isDarkTheme" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-            stroke="currentColor" class="w-5 h-5 ml-auto">
-            <path stroke-linecap="round" stroke-linejoin="round"
-              d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+          <svg
+            *ngIf="isDarkTheme"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-5 h-5 ml-auto"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
+            />
           </svg>
-          <svg *ngIf="!isDarkTheme" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-            stroke-width="1.5" stroke="currentColor" class="w-5 h-5 ml-auto">
-            <path stroke-linecap="round" stroke-linejoin="round"
-              d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
+          <svg
+            *ngIf="!isDarkTheme"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-5 h-5 ml-auto"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"
+            />
           </svg>
         </a>
       </li>
 
-      <div class="divider">{{ 'LANGUAGE' | translate }}</div>
+      <div class="divider">{{ "LANGUAGE" | translate }}</div>
       <li>
-        <a (click)="switchLanguage('en', $event)"
-          class="flex items-center gap-2 hover:bg-primary/10 transition-all duration-200">
-          {{ 'ENGLISH' | translate }}
-          <span class="badge badge-sm ml-auto" *ngIf="currentLang === 'en'">{{ 'CURRENT' | translate }}</span>
+        <a
+          (click)="switchLanguage('en', $event)"
+          class="flex items-center gap-2 hover:bg-primary/10 transition-all duration-200"
+        >
+          {{ "ENGLISH" | translate }}
+          <span class="badge badge-sm ml-auto" *ngIf="currentLang === 'en'">{{
+            "CURRENT" | translate
+          }}</span>
         </a>
       </li>
       <li>
-        <a (click)="switchLanguage('es', $event)"
-          class="flex items-center gap-2 hover:bg-primary/10 transition-all duration-200">
-          {{ 'SPANISH' | translate }}
-          <span class="badge badge-sm ml-auto" *ngIf="currentLang === 'es'">{{ 'CURRENT' | translate }}</span>
+        <a
+          (click)="switchLanguage('es', $event)"
+          class="flex items-center gap-2 hover:bg-primary/10 transition-all duration-200"
+        >
+          {{ "SPANISH" | translate }}
+          <span class="badge badge-sm ml-auto" *ngIf="currentLang === 'es'">{{
+            "CURRENT" | translate
+          }}</span>
         </a>
       </li>
     </ul>

@@ -40,7 +40,9 @@ public class SecurityConfig {
 						.requestMatchers("/api/v1/auth/**").permitAll()
 						.requestMatchers("/api/health/**").permitAll()
 						.requestMatchers(HttpMethod.POST, "/api/v1/users").permitAll()
+						.requestMatchers(HttpMethod.GET, "/api/v1/users/{username}/exists").permitAll()
 						.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+						.requestMatchers("/ws/**").permitAll()
 						.anyRequest().authenticated())
 				.userDetailsService(userDetailsService)
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
@@ -49,7 +51,8 @@ public class SecurityConfig {
 				.authenticationEntryPoint(jwtAuthenticationEntryPoint)
 				.accessDeniedHandler(accessDeniedHandler));
 
-		httpSecurity.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
+		httpSecurity
+				.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return httpSecurity.build();
 	}

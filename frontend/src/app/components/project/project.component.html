@@ -1,0 +1,40 @@
+<h2>{{ project?.name }}</h2>
+<p *ngIf="project?.description">{{ project?.description }}</p>
+<button class="btn btn-primary float-right" (click)="openNameModal()">
+  {{ "INVITE_USER" | translate }}
+</button>
+
+<div class="bg-base-200 rounded-lg p-4 mb-3">
+  <h5 class="font-medium text-lg">
+    {{ "ACTIVE_USERS" | translate }} ({{ activeUsers.length }})
+  </h5>
+
+  <div class="flex flex-wrap gap-2 mt-2">
+    <div
+      *ngFor="let user of activeUsers"
+      class="badge badge-neutral gap-1 py-3 px-3"
+    >
+      <div
+        class="w-2 h-2 rounded-full"
+        [ngClass]="user === currentUser ? 'bg-primary' : 'bg-success'"
+      ></div>
+      <span
+        >{{ user }}
+        <span *ngIf="user === currentUser"
+          >({{ "YOU" | translate }})</span
+        ></span
+      >
+    </div>
+    <div *ngIf="activeUsers.length === 0" class="italic text-opacity-70">
+      {{ "NO_ACTIVE_USERS" | translate }}
+    </div>
+  </div>
+</div>
+
+<app-invite-user
+  [openModalTrigger]="inviteModalTrigger$"
+  [projectId]="project?.id!"
+>
+</app-invite-user>
+
+<div #timeline id="timeline"></div>

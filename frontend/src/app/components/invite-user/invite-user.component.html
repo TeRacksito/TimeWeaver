@@ -1,0 +1,120 @@
+<div class="modal" [ngClass]="{ 'modal-open': isOpen() }" tabindex="-1">
+  <div class="modal-box">
+    <div>
+      <div>
+        <h3 class="text-lg font-bold">
+          {{ "INVITE_USER" | translate }}
+        </h3>
+        <h4>
+          {{ "INVITE_USER_DESCRIPTION" | translate }}
+        </h4>
+      </div>
+      <div>
+        <form [formGroup]="inviteForm">
+          <div class="mb-3">
+            <label class="floating-label">
+              <span>{{ "USERNAME" | translate }}</span>
+              <div class="relative">
+                <input
+                  type="text"
+                  id="username"
+                  formControlName="username"
+                  class="input input-bordered w-full mt-1 pr-10"
+                  placeholder="{{ 'USERNAME' | translate }}"
+                  [ngClass]="{
+                    'input-error':
+                      usernameControl?.invalid && usernameControl?.touched,
+                    'input-success':
+                      usernameControl?.valid && usernameControl?.touched,
+                  }"
+                />
+                <span
+                  *ngIf="isUserLoading()"
+                  class="loading loading-spinner absolute right-3 top-1/2 -translate-y-1/2"
+                ></span>
+              </div>
+              <div
+                *ngIf="usernameControl?.invalid && usernameControl?.touched"
+                class="text-error text-sm mt-1 flex flex-col gap-1"
+              >
+                <span *ngIf="usernameControl?.errors?.['required']">{{
+                  "FORM_FIELD_REQUIRED"
+                    | translate: { fieldName: ("USERNAME" | translate) }
+                }}</span>
+                <span *ngIf="usernameControl?.errors?.['usernameNotFound']">
+                  {{ "USER_NOT_FOUND" | translate }}
+                </span>
+                <span *ngIf="usernameControl?.errors?.['invalidUsername']">
+                  {{ "INVALID_USERNAME" | translate }}
+                </span>
+              </div>
+            </label>
+          </div>
+
+          <div class="mb-3">
+            <div class="relative">
+              <select
+                id="roleId"
+                formControlName="roleId"
+                class="select w-full mt-1"
+                [ngClass]="{
+                  'input-error': roleControl?.invalid && roleControl?.touched,
+                  'input-success': roleControl?.valid && roleControl?.touched,
+                }"
+                [disabled]="isRolesLoading()"
+              >
+                <option disabled selected>
+                  {{ "SELECT_ROLE" | translate }}
+                </option>
+                <option *ngFor="let role of projectRoles" [value]="role.id">
+                  {{ role.name | translate }}
+                </option>
+              </select>
+              <span
+                *ngIf="isRolesLoading()"
+                class="loading loading-spinner absolute right-3 top-1/2 -translate-y-1/2"
+              ></span>
+            </div>
+            <div
+              *ngIf="roleControl?.invalid && roleControl?.touched"
+              class="text-error text-sm mt-1"
+            >
+              <span *ngIf="roleControl?.errors?.['required']">{{
+                "FORM_FIELD_REQUIRED"
+                  | translate: { fieldName: ("PROJECT_ROLE" | translate) }
+              }}</span>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div>
+        <button
+          type="button"
+          class="btn btn-primary w-full mt-4"
+          (click)="submitName()"
+          [disabled]="
+            isUserLoading() ||
+            isRolesLoading() ||
+            inviteForm.invalid ||
+            inviteForm.pending
+          "
+        >
+          <span *ngIf="!isUserLoading() && !isRolesLoading()">{{
+            "INVITE" | translate
+          }}</span>
+          <span
+            *ngIf="isUserLoading() || isRolesLoading()"
+            class="loading loading-spinner"
+          ></span>
+        </button>
+        <button
+          type="button"
+          class="btn btn-neutral w-full mt-4"
+          (click)="closeModal()"
+        >
+          <span>{{ "CANCEL" | translate }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

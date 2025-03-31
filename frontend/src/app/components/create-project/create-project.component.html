@@ -1,0 +1,140 @@
+<div class="modal" [ngClass]="{ 'modal-open': isOpen() }" tabindex="-1">
+  <div class="modal-box">
+    <div>
+      <div>
+        <h3 class="text-lg font-bold">
+          {{ "CREATE_PROJECT" | translate }}
+        </h3>
+        <h4>
+          {{
+            "CREATE_PROJECT_DESCRIPTION"
+              | translate
+                : {
+                    roleName: ("ROLE_PROJECT_MANAGER" | translate),
+                  }
+          }}
+        </h4>
+      </div>
+      <div>
+        <form [formGroup]="projectForm" (ngSubmit)="createProject()">
+          <div class="mb-3">
+            <label class="floating-label">
+              <span>{{ "PROJECT_NAME" | translate }}</span>
+              <input
+                type="text"
+                id="name"
+                formControlName="name"
+                placeholder="{{ 'PROJECT_NAME' | translate }}"
+                class="input input-bordered w-full mt-1"
+                [ngClass]="{
+                  'input-error':
+                    projectForm.get('name')?.invalid &&
+                    projectForm.get('name')?.touched,
+                  'input-success':
+                    projectForm.get('name')?.valid &&
+                    projectForm.get('name')?.touched,
+                }"
+              />
+              <div
+                *ngIf="
+                  projectForm.get('name')?.invalid &&
+                  projectForm.get('name')?.touched
+                "
+                class="text-error text-sm mt-1 flex flex-col gap-1"
+              >
+                <span *ngIf="projectForm.get('name')?.errors?.['required']">
+                  {{
+                    "FORM_FIELD_REQUIRED"
+                      | translate: { fieldName: ("PROJECT_NAME" | translate) }
+                  }}
+                </span>
+                <span *ngIf="projectForm.get('name')?.errors?.['minlength']">
+                  {{
+                    "FORM_FIELD_MIN_LENGTH"
+                      | translate
+                        : {
+                            fieldName: ("PROJECT_NAME" | translate),
+                            minLength: NAME_MIN_LENGTH,
+                          }
+                  }}
+                </span>
+                <span *ngIf="projectForm.get('name')?.errors?.['maxlength']">
+                  {{
+                    "FORM_FIELD_MAX_LENGTH"
+                      | translate
+                        : {
+                            fieldName: ("PROJECT_NAME" | translate),
+                            maxLength: NAME_MAX_LENGTH,
+                          }
+                  }}
+                </span>
+              </div>
+            </label>
+          </div>
+
+          <div class="mb-3">
+            <label class="floating-label">
+              <span>{{ "PROJECT_DESCRIPTION" | translate }}</span>
+              <textarea
+                id="description"
+                formControlName="description"
+                placeholder="{{ 'PROJECT_DESCRIPTION' | translate }}"
+                class="textarea textarea-bordered w-full h-24 mt-1"
+                [ngClass]="{
+                  'textarea-error':
+                    projectForm.get('description')?.invalid &&
+                    projectForm.get('description')?.touched,
+                  'textarea-success':
+                    projectForm.get('description')?.valid &&
+                    projectForm.get('description')?.touched,
+                }"
+              ></textarea>
+              <div
+                *ngIf="
+                  projectForm.get('description')?.invalid &&
+                  projectForm.get('description')?.touched
+                "
+                class="text-error text-sm mt-1"
+              >
+                <span
+                  *ngIf="projectForm.get('description')?.errors?.['maxlength']"
+                >
+                  {{
+                    "FORM_FIELD_MAX_LENGTH"
+                      | translate
+                        : {
+                            fieldName: ("PROJECT_DESCRIPTION" | translate),
+                            maxLength: DESCRIPTION_MAX_LENGTH,
+                          }
+                  }}
+                </span>
+              </div>
+            </label>
+          </div>
+
+          <div *ngIf="errorMessage()" class="alert alert-error mb-4">
+            {{ errorMessage() }}
+          </div>
+        </form>
+      </div>
+      <div>
+        <button
+          type="button"
+          class="btn btn-primary w-full mt-4"
+          (click)="createProject()"
+          [disabled]="projectForm.invalid || isCreating()"
+        >
+          <span *ngIf="!isCreating()">{{ "CREATE" | translate }}</span>
+          <span *ngIf="isCreating()" class="loading loading-spinner"></span>
+        </button>
+        <button
+          type="button"
+          class="btn btn-neutral w-full mt-4"
+          (click)="closeModal()"
+        >
+          <span>{{ "CANCEL" | translate }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

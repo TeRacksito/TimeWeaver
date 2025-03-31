@@ -19,22 +19,12 @@
         />
         <div
           *ngIf="usernameControl?.invalid && usernameControl?.touched"
-          class="text-error text-sm mt-1"
+          class="text-error text-sm mt-1 flex flex-col gap-1"
         >
           <span *ngIf="usernameControl?.errors?.['required']">{{
             "FORM_FIELD_REQUIRED"
               | translate: { fieldName: ("USERNAME" | translate) }
           }}</span>
-          <span *ngIf="usernameControl?.errors?.['minlength']">
-            {{
-              "FORM_FIELD_MIN_LENGTH"
-                | translate
-                  : {
-                      fieldName: ("USERNAME" | translate),
-                      minLength: USERNAME_MIN_LENGTH,
-                    }
-            }}
-          </span>
         </div>
       </label>
 
@@ -52,22 +42,12 @@
         />
         <div
           *ngIf="passwordControl?.invalid && passwordControl?.touched"
-          class="text-error text-sm mt-1"
+          class="text-error text-sm mt-1 flex flex-col gap-1"
         >
           <span *ngIf="passwordControl?.errors?.['required']">{{
             "FORM_FIELD_REQUIRED"
               | translate: { fieldName: ("PASSWORD" | translate) }
           }}</span>
-          <span *ngIf="passwordControl?.errors?.['minlength']">
-            {{
-              "FORM_FIELD_MIN_LENGTH"
-                | translate
-                  : {
-                      fieldName: ("PASSWORD" | translate),
-                      minLength: PASSWORD_MIN_LENGTH,
-                    }
-            }}
-          </span>
         </div>
       </label>
 

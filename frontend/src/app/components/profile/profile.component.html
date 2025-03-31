@@ -1,0 +1,94 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-lg">
+    <div class="px-4 py-5 sm:px-6 flex justify-between items-center">
+      <div>
+        <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white">
+          {{ "PROFILE" | translate }}
+        </h3>
+        <p class="mt-1 max-w-2xl text-sm text-gray-500 dark:text-gray-400">
+          {{ "WELCOME" | translate: { username: username } }}
+        </p>
+      </div>
+      <button (click)="logout()" class="btn btn-secondary">
+        {{ "LOGOUT" | translate }}
+      </button>
+    </div>
+
+    <div class="border-t border-gray-200 dark:border-gray-700 px-4 py-5 sm:p-6">
+      <h3
+        class="text-lg leading-6 font-medium text-gray-900 dark:text-white mb-4"
+      >
+        {{ "NOTIFICATIONS" | translate }}
+      </h3>
+
+      <div class="space-y-4">
+        <div
+          *ngIf="notifications.length === 0"
+          class="text-gray-500 dark:text-gray-400"
+        >
+          {{ "NO_NOTIFICATIONS" | translate }}
+        </div>
+
+        <div
+          *ngFor="let notification of notifications"
+          class="p-4 rounded-md shadow border-l-4"
+          [ngClass]="{
+            'border-blue-500': !notification.read,
+            'border-gray-300 dark:border-gray-600': notification.read,
+          }"
+        >
+          @if (isProjectInvitation(notification.data)) {
+            <div class="w-full">
+              <div class="flex justify-between mb-2">
+                <p class="text-sm">
+                  {{
+                    getTranslationKey(notification.type)
+                      | translate
+                        : {
+                            inviterName:
+                              getProjectInvitation(notification)?.inviterUser
+                                ?.username,
+                            projectName:
+                              getProjectInvitation(notification)?.project?.name,
+                            roleName:
+                              (getProjectInvitation(notification)?.projectRole
+                                ?.name || "" | translate),
+                          }
+                  }}
+                </p>
+                <span class="text-xs">
+                  {{ notification.createdAt | date: "medium" }}
+                </span>
+              </div>
+              @if (isNotificationTypeProjectInvitation(notification)) {
+                <div class="flex gap-2 mt-2">
+                  <button
+                    class="btn btn-sm btn-primary"
+                    (click)="acceptInvitation(notification)"
+                  >
+                    {{ "ACCEPT" | translate }}
+                  </button>
+                  <button
+                    class="btn btn-sm btn-outline"
+                    (click)="declineInvitation(notification)"
+                  >
+                    {{ "DECLINE" | translate }}
+                  </button>
+                </div>
+              }
+            </div>
+          } @else {
+            <div class="w-full">
+              <p class="text-sm">
+                {{ notification }}
+              </p>
+              <span class="text-xs">
+                {{ notification.createdAt | date: "medium" }}
+              </span>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

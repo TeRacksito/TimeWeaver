@@ -10,9 +10,10 @@ import {
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { tokenInterceptor } from './interceptors/token.interceptor';
 import { authInterceptor } from './interceptors/auth.interceptor';
+import { NotificationService } from './services/notification.service';
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (
-  http: HttpClient
+  http: HttpClient,
 ) => new TranslateHttpLoader(http, './i18n/', '.json');
 
 export const appConfig: ApplicationConfig = {
@@ -28,5 +29,6 @@ export const appConfig: ApplicationConfig = {
       },
       defaultLanguage: 'en',
     }),
+    NotificationService,
   ],
 };

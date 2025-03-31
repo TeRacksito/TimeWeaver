@@ -1,5 +1,6 @@
 package es.angelkrasimirov.timeweaver.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -33,6 +34,10 @@ public class User {
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private List<Role> roles = new ArrayList<>();
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<UserProjectRole> userProjectRoles = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -84,6 +89,24 @@ public class User {
 
 	public void removeRole(Role role) {
 		this.roles.remove(role);
+	}
+
+	public List<UserProjectRole> getUserProjectRoles() {
+		return userProjectRoles;
+	}
+
+	public void setUserProjectRoles(List<UserProjectRole> userProjectRoles) {
+		this.userProjectRoles = userProjectRoles;
+	}
+
+	public void addUserProjectRole(UserProjectRole userProjectRole) {
+		this.userProjectRoles.add(userProjectRole);
+		userProjectRole.setUser(this);
+	}
+
+	public void removeUserProjectRole(UserProjectRole userProjectRole) {
+		this.userProjectRoles.remove(userProjectRole);
+		userProjectRole.setUser(null);
 	}
 
 }

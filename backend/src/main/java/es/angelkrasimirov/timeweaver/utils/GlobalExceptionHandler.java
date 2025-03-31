@@ -57,6 +57,10 @@ public class GlobalExceptionHandler {
 			throw ex; // let fucking Spring security handle these
 		}
 
+		System.err.println("Global exception occurred: " + ex.getClass().getName());
+		System.err.println("Exception message: " + ex.getMessage());
+		ex.printStackTrace();
+
 		Map<String, String> response = new HashMap<>();
 		response.put("error", "Internal Server Error");
 		response.put("message", ex.getMessage());

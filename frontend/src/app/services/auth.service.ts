@@ -80,4 +80,34 @@ export class AuthService {
       return true;
     }
   }
+
+  getUsername(): string | null {
+    if (!this.token) {
+      return null;
+    }
+
+    try {
+      const payload = this.token.split('.')[1];
+      const decodedPayload = JSON.parse(atob(payload));
+      return decodedPayload.sub || null;
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      return null;
+    }
+  }
+
+  getUserId(): number | null {
+    if (!this.token) {
+      return null;
+    }
+
+    try {
+      const payload = this.token.split('.')[1];
+      const decodedPayload = JSON.parse(atob(payload));
+      return decodedPayload.userId || null;
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      return null;
+    }
+  }
 }

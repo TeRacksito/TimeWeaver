@@ -10,6 +10,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AuthService } from '../../services/auth.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { getApiError } from '../../utils/api';
 
 @Component({
   standalone: true,
@@ -29,23 +30,14 @@ export class LoginComponent {
   private route = inject(ActivatedRoute);
   private fb = inject(FormBuilder);
 
-  readonly USERNAME_MIN_LENGTH = 4;
-  readonly PASSWORD_MIN_LENGTH = 8;
-
   loginForm: FormGroup;
   isLoading = signal(false);
   errorMessage: WritableSignal<string | null> = signal(null);
 
   constructor() {
     this.loginForm = this.fb.group({
-      username: [
-        '',
-        [Validators.required, Validators.minLength(this.USERNAME_MIN_LENGTH)],
-      ],
-      password: [
-        '',
-        [Validators.required, Validators.minLength(this.PASSWORD_MIN_LENGTH)],
-      ],
+      username: ['', [Validators.required]],
+      password: ['', [Validators.required]],
     });
   }
 
@@ -76,7 +68,7 @@ export class LoginComponent {
       },
       error: (err) => {
         this.isLoading.set(false);
-        this.errorMessage.set(err.error?.message || 'Login failed');
+        this.errorMessage.set(getApiError(err, 'login.error'));
       },
     });
   }

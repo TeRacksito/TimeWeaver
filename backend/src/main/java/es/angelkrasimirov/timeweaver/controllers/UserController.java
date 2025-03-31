@@ -9,9 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import es.angelkrasimirov.timeweaver.dtos.UserRegistrationDto;
-import es.angelkrasimirov.timeweaver.models.Role;
 import es.angelkrasimirov.timeweaver.models.User;
-import es.angelkrasimirov.timeweaver.services.RoleService;
 import es.angelkrasimirov.timeweaver.services.UserService;
 
 import java.util.List;
@@ -22,9 +20,6 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
-
-	@Autowired
-	private RoleService roleService;
 
 	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/users")
@@ -76,6 +71,18 @@ public class UserController {
 		} catch (NoResourceFoundException e) {
 			return ResponseEntity.noContent().build();
 		}
+	}
+
+	@GetMapping("/users/{username}/user")
+	@PreAuthorize("hasRole('USER')")
+	public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
+		User user = userService.getUserByUsername(username);
+		return ResponseEntity.ok(user);
+	}
+
+	@GetMapping("/users/{username}/exists")
+	public ResponseEntity<Boolean> checkUsernameExists(@PathVariable String username) {
+		return ResponseEntity.ok(userService.existsByUsername(username));
 	}
 
 	// @PostMapping("/users/register")

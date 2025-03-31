@@ -1,6 +1,4 @@
 {
   "java.configuration.updateBuildConfiguration": "interactive",
-  "cSpell.words": [
-    "mvnw"
-  ]
+  "cSpell.words": ["mvnw", "nullable"]
 }
