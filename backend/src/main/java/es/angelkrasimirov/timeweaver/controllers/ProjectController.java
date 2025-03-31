@@ -42,7 +42,7 @@ public class ProjectController {
   }
 
   @PreAuthorize("hasRole('ADMIN') or " +
-      "@projectSecurityService.hasAnyProjectRole(#projectId, 'ROLE_PROJECT_MANAGER', 'ROLE_PROJECT_MEMBER', 'ROLE_PROJECT_VIEWER')")
+      "@projectSecurityService.hasAnyProjectRole(#projectId, 'ROLE_PROJECT_MANAGER', 'ROLE_PROJECT_CONTRIBUTOR', 'ROLE_PROJECT_VIEWER')")
   @GetMapping("/projects/{projectId}")
   public ResponseEntity<Project> getProjectById(@PathVariable Long projectId) {
     Project project = projectService.getProjectById(projectId);

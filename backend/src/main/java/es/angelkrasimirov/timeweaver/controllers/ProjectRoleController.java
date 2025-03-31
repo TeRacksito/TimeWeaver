@@ -34,7 +34,7 @@ public class ProjectRoleController {
   }
 
   @GetMapping("/projects/{projectId}/users-role/{userId}")
-  @PreAuthorize("@projectSecurityService.hasAnyProjectRole(#projectId, 'ROLE_PROJECT_MANAGER', 'ROLE_PROJECT_MEMBER', 'ROLE_PROJECT_VIEWER')")
+  @PreAuthorize("@projectSecurityService.hasAnyProjectRole(#projectId, 'ROLE_PROJECT_MANAGER', 'ROLE_PROJECT_CONTRIBUTOR', 'ROLE_PROJECT_VIEWER')")
   public ResponseEntity<ProjectRole> getUserRolesByProjectId(
       @PathVariable Long projectId,
       @PathVariable Long userId) throws NoResourceFoundException {
